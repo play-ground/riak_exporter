@@ -1,0 +1,20 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    beefcake (1.0.0)
+    builder (3.2.2)
+    i18n (0.6.11)
+    innertube (1.0.2)
+    multi_json (1.10.1)
+    riak-client (1.4.5)
+      beefcake (~> 1.0.0)
+      builder (>= 2.1.2)
+      i18n (>= 0.4.0)
+      innertube (~> 1.0.2)
+      multi_json (~> 1.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  riak-client
