@@ -8,7 +8,8 @@ class RiakDump
     @options = options
 
     @client = Riak::Client.new(:nodes => [
-      { :host => options[:host] }
+      { :host => options[:host],
+        :protocol => "pbc"}
     ])
   end
 
@@ -23,8 +24,8 @@ class RiakDump
         begin
           output.write("#{bucket.name}:#{key}:")
           output.write(object.raw_data)
-        rescue
-          puts "Error with: #{bucket.name}/#{key}"
+        rescue => ex
+          $stderr.puts "Error with: #{bucket.name}/#{key} - #{ex.message[0..75]}"
         ensure
           output.write("\n")
         end
@@ -33,6 +34,7 @@ class RiakDump
         return if @options[:count] && @options[:count] <= counter
       end
     end
+    puts "Dumped #{counter} records."
   ensure
     output.close
   end
@@ -55,10 +57,11 @@ class RiakDump
           obj.data = hash
           obj.store
         rescue => ex
-          puts "Failed #{counter}: #{bucket_name}/#{key} from #{line[0..50]}- #{ex.message[0..50]}"
+          $stderr.puts "Failed #{counter}: #{bucket_name}/#{key} from #{line[0..50]}- #{ex.message[0..50]}"
         end
       end
     end
+    puts "Finished processing #{counter} records in file!"
   end
 
   def read_ticket(bucket_id, key)
