@@ -9,7 +9,7 @@ class RiakDump
 
     @client = Riak::Client.new(:nodes => [
       { :host => options[:host],
-        :protocol => "pbc"}
+        :protocol => "http"}
     ])
   end
 
@@ -53,7 +53,7 @@ class RiakDump
           hash = JSON.parse(line)
           bucket_name = @options[:bucket] if @options[:bucket]
           puts "Inserting: #{bucket_name}/#{key} - #{line[0..40]}..." if @options[:verbose]
-          obj = @client.bucket(bucket_name).new(key)
+          obj = @client.bucket(bucket_name).get_or_new(key)
           obj.data = hash
           obj.store
         rescue => ex
