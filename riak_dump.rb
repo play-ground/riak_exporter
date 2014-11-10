@@ -9,7 +9,7 @@ class RiakDump
 
     @client = Riak::Client.new(:nodes => [
       { :host => options[:host],
-        :protocol => "http"}
+        :protocol => "pbc"}
     ])
   end
 
